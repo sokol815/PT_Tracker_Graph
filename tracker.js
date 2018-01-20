@@ -77,6 +77,11 @@
 	util.graph.prototype.drawStats = function() {
 		var ctx = util.canvasContext;
 		var size = this.destination.getBoundingClientRect()
+
+		if( util.canvas == undefined || util.canvas.height == undefined ) {
+			return;
+		}
+
 		if( size.width != util.canvas.width || size.height != util.canvas.height ) {
 			util.canvas = util.createHiDPICanvas(size.width, size.height, 1, $('#myCanvas')[0] );
 			util.canvasContext = util.canvas.getContext('2d');
@@ -120,7 +125,43 @@
 
 	};
 
+	var containers = {
+		dca: {
+			dataName: 'dcaLogData',
+			divideBy100: true,
+			name: 'dtDcaLogs',
+			statName: 'profit',
+			childDestination: 'profit',
+			pairAppend: ''
+		},
+		pairs: {
+			dataName: 'gainLogData',
+			divideBy100: true,
+			name: 'dtPairsLogs',
+			statName: 'profit',
+			childDestination: 'profit',
+			pairAppend: ''
+		},
+		pbl: {
+			dataName: 'bbBuyLogData',
+			divideBy100: true,
+			name: 'dtPossibleBuysLog',
+			statName: 'currentValue',
+			childDestination: 'current-value',
+			pairAppend: '_PBL'
+		},
+		dust: {
+			dataName: 'dustLogData',
+			divideBy100: true,
+			name: 'dtDustLogs',
+			statName: 'profit',
+			childDestination: 'profit',
+			pairAppend: '_DUST'
+		}
+	};
+
 	var pairData = {};
+
 	var freshPairCutoff = 30000;
 	var tick = function( data ) {
 		var now = Date.now();
@@ -131,39 +172,43 @@
 			}
 		}
 
-		for( var i = 0; i < data.dcaLogData.length; i++ ) {
-			var pair = data.dcaLogData[i].market;
-			if( pairData[pair] == undefined ) {
-				pairData[pair] = {
-					lastTick: now,
-					graph: new util.graph()
-				};
-			} else {
-				pairData[pair].lastTick = now;
+		var dataTypes = Object.keys( containers );
+		for( var i = 0; i < dataTypes.length; i++ ) {
+			var source = data[containers[dataTypes[i]].dataName];
+			var divideBy100 = containers[dataTypes[i]].divideBy100;
+			for( var j = 0; j < source.length; j++ ) {
+				var pair = source[j].market + containers[dataTypes[i]].pairAppend;
+				if( pairData[pair] == undefined ) {
+					pairData[pair] = {
+						lastTick: now,
+						graph: new util.graph()
+					};
+				} else {
+					pairData[pair].lastTick = now;
+				}
+				pairData[pair].graph.updateStats(divideBy100 ? source[j][containers[dataTypes[i]].statName]/100 : source[j][containers[dataTypes[i]].statName]);
 			}
-			pairData[pair].graph.updateStats(data.dcaLogData[i].profit/100);
 		}
-
-
 	};
 
 	function render() {
-		var logs = $('#dtDcaLogs');
-		var render = false;
-		if( logs.width() != 100 ) {
-			render = true;
-		}
 
-		if( render ) {
-			var logs = $('#dtDcaLogs tbody tr');
-			for( var i = 0; i < logs.length; i++ ) {
-				var curType = $(logs[i]).children('.market').children('a').html();
-				var cur = pairData[curType];
-				if( cur !== undefined ) {
-					//we can render it!
-					cur.graph.setSelector($(logs[i]).children('.profit'));
-					cur.graph.drawStats();
+		var renderTypes = Object.keys( containers );
+		for( var i = 0; i < renderTypes.length; i++ ) {
+			var curContainer = containers[renderTypes[i]];
+			var curParent = $('#'+curContainer.name);
+			if( curParent.width() != 100 ) {
+				var curParent = $('#'+curContainer.name +' tbody tr');
+				for( var j = 0; j < curParent.length; j++ ) {
+					var curType = $(curParent[j]).children('.market').children('a').html();
+					var cur = pairData[curType+curContainer.pairAppend];
+					if( cur !== undefined ) {
+						//we can render it!
+						cur.graph.setSelector($(curParent[j]).children('.'+curContainer.childDestination));
+						cur.graph.drawStats();
+					}
 				}
+				return; // --- we rendered this one, dont render any others.
 			}
 		}
 	}
@@ -206,7 +251,7 @@
 	$("body").on('DOMSubtreeModified', "#dvLastUpdatedOn", function() {
 		render();
 	});
-	$(".dca-log").on("click",function(){
+	$(".dca-log,.dust-log,.pairs-log,.possible-buys-log").on("click",function(){
 		setTimeout(function(){ render(); }, 100 );
 	});
 })();
