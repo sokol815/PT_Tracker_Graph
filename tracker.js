@@ -16,27 +16,27 @@
 (function(){
 	var util = {};
 
-	util.createHiDPICanvas = function(w, h, ratio, elementUse) {
-		if(!window.PIXEL_RATIO) {
-		    window.PIXEL_RATIO = (function () {
-		   		var ctx = document.createElement("canvas").getContext("2d"),
-		        dpr = window.devicePixelRatio || 1,
-		        bsr = ctx.webkitBackingStorePixelRatio ||
-		              ctx.mozBackingStorePixelRatio ||
-		              ctx.msBackingStorePixelRatio ||
-		              ctx.oBackingStorePixelRatio ||
-		              ctx.backingStorePixelRatio || 1;
+	util.createHiDPICanvas = function( w, h, ratio, elementUse ) {
+		if( !window.PIXEL_RATIO ) {
+		    window.PIXEL_RATIO = ( function () {
+				var ctx = document.createElement( "canvas" ).getContext( "2d" ),
+				dpr = window.devicePixelRatio || 1,
+				bsr = ctx.webkitBackingStorePixelRatio ||
+						ctx.mozBackingStorePixelRatio ||
+						ctx.msBackingStorePixelRatio ||
+						ctx.oBackingStorePixelRatio ||
+						ctx.backingStorePixelRatio || 1;
 
 			    return dpr / bsr;
 			})();
 		}
-	    if (!ratio) { ratio = window.PIXEL_RATIO; }
-	    var can = (Array.isArray( elementUse ) ? elementUse[0] : elementUse);
+	    if ( !ratio ) { ratio = window.PIXEL_RATIO; }
+	    var can = ( Array.isArray( elementUse ) ? elementUse[0] : elementUse );
 	    can.width = w * ratio;
 	    can.height = h * ratio;
 	    can.style.width = w + "px";
 	    can.style.height = h + "px";
-	    can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
+	    can.getContext( "2d" ).setTransform( ratio, 0, 0, ratio, 0, 0 );
 	    return can;
 	};
 
@@ -46,7 +46,7 @@
 			data: []
 		};
 		this.stats.data = new Array( this.stats.totalSamples );
-		this.stats.data = this.stats.data.join(',').split(',').map(function() { return null; });
+		this.stats.data = this.stats.data.join( ',' ).split( ',' ).map( function() { return null; });
 	};
 
 	util.graph.prototype.setSelector = function( selector ) {
@@ -55,21 +55,21 @@
 		var width = selector.width();
 		var height = selector.height();
 
-		var canvas = $('#myCanvas');
+		var canvas = $( '#myCanvas' );
 		var self = this;
 		if( canvas.length < 1 ) {
-			$('body').append('<div style="position:absolute;display:none;"><canvas id="myCanvas"></canvas></div>');
-			var canvas = $('#myCanvas');
-			canvas = util.createHiDPICanvas(width, height, 1, canvas[0] );
+			$( 'body' ).append( '<div style="position:absolute;display:none;"><canvas id="myCanvas"></canvas></div>' );
+			var canvas = $( '#myCanvas' );
+			canvas = util.createHiDPICanvas( width, height, 1, canvas[0] );
 			util.canvas = canvas;
-			util.canvasContext = canvas.getContext('2d');
+			util.canvasContext = canvas.getContext( '2d' );
 		}
 		this.canvas = canvas;
 	};
 
 	util.graph.prototype.rangePad = .02;
 
-	util.graph.prototype.updateStats = function(value) {
+	util.graph.prototype.updateStats = function( value ) {
 		this.stats.data.push( value );
 		this.stats.data.shift(); // remove the oldest value
 	};
@@ -83,8 +83,8 @@
 		}
 
 		if( size.width != util.canvas.width || size.height != util.canvas.height ) {
-			util.canvas = util.createHiDPICanvas(size.width, size.height, 1, $('#myCanvas')[0] );
-			util.canvasContext = util.canvas.getContext('2d');
+			util.canvas = util.createHiDPICanvas(size.width, size.height, 1, $( '#myCanvas' )[0] );
+			util.canvasContext = util.canvas.getContext( '2d' );
 		}
 		ctx.clearRect( 0, 0, size.width, size.height );
 		ctx.strokeStyle = '#000';
@@ -92,11 +92,11 @@
 		ctx.beginPath();
 		var first = true;
 		var totalRun = this.stats.totalSamples;
-		var range = {min: 1e8, max: -1e8, size: 0};
-		this.stats.data.forEach(function(c){
+		var range = { min: 1e8, max: -1e8, size: 0 };
+		this.stats.data.forEach( function( c ){
 			if( c !== null ) {
-				range.min = Math.min(c,range.min);
-				range.max = Math.max(c,range.max);
+				range.min = Math.min( c, range.min );
+				range.max = Math.max( c, range.max );
 			}
 		});
 
@@ -110,15 +110,15 @@
 			if( this.stats.data[i] != null ) {
 				if( first ) {
 					first = false;
-					ctx.moveTo( index/totalRun * size.width, size.height - ((this.stats.data[i] - range.min) / range.size * size.height) );
+					ctx.moveTo( index/totalRun * size.width, size.height - (( this.stats.data[i] - range.min ) / range.size * size.height ));
 				} else {
-					ctx.lineTo( index/totalRun * size.width, size.height - ((this.stats.data[i] - range.min) / range.size * size.height) );
+					ctx.lineTo( index/totalRun * size.width, size.height - (( this.stats.data[i] - range.min ) / range.size * size.height ));
 				}
 				index++;
 			}
 		}
 		ctx.stroke();
-		var res = 'url('+util.canvas.toDataURL()+')';
+		var res = 'url(' + util.canvas.toDataURL() + ')';
 
 		this.destination.style['backgroundImage'] = res;
 		this.destination.style['backgroundRepeat'] = 'no-repeat';
@@ -128,7 +128,6 @@
 	var containers = {
 		dca: {
 			dataName: 'dcaLogData',
-			divideBy100: true,
 			name: 'dtDcaLogs',
 			statName: 'profit',
 			childDestination: 'profit',
@@ -136,7 +135,6 @@
 		},
 		pairs: {
 			dataName: 'gainLogData',
-			divideBy100: true,
 			name: 'dtPairsLogs',
 			statName: 'profit',
 			childDestination: 'profit',
@@ -144,7 +142,6 @@
 		},
 		pbl: {
 			dataName: 'bbBuyLogData',
-			divideBy100: true,
 			name: 'dtPossibleBuysLog',
 			statName: 'currentValue',
 			childDestination: 'current-value',
@@ -152,7 +149,6 @@
 		},
 		dust: {
 			dataName: 'dustLogData',
-			divideBy100: true,
 			name: 'dtDustLogs',
 			statName: 'profit',
 			childDestination: 'profit',
@@ -163,7 +159,7 @@
 	var pairData = {};
 
 	var freshPairCutoff = 30000;
-	var tick = function( data ) {
+	function tick( data ) {
 		var now = Date.now();
 		var keys = Object.keys( pairData );
 		for( var i = 0; i < keys.length; i++ ) {
@@ -175,7 +171,6 @@
 		var dataTypes = Object.keys( containers );
 		for( var i = 0; i < dataTypes.length; i++ ) {
 			var source = data[containers[dataTypes[i]].dataName];
-			var divideBy100 = containers[dataTypes[i]].divideBy100;
 			for( var j = 0; j < source.length; j++ ) {
 				var pair = source[j].market + containers[dataTypes[i]].pairAppend;
 				if( pairData[pair] == undefined ) {
@@ -186,25 +181,25 @@
 				} else {
 					pairData[pair].lastTick = now;
 				}
-				pairData[pair].graph.updateStats(divideBy100 ? source[j][containers[dataTypes[i]].statName]/100 : source[j][containers[dataTypes[i]].statName]);
+				pairData[pair].graph.updateStats( source[j][containers[dataTypes[i]].statName] / 100 );
 			}
 		}
-	};
+	}
 
 	function render() {
 
 		var renderTypes = Object.keys( containers );
 		for( var i = 0; i < renderTypes.length; i++ ) {
 			var curContainer = containers[renderTypes[i]];
-			var curParent = $('#'+curContainer.name);
+			var curParent = $( '#' + curContainer.name );
 			if( curParent.width() != 100 ) {
-				var curParent = $('#'+curContainer.name +' tbody tr');
+				var curParent = $( '#' + curContainer.name + ' tbody tr' );
 				for( var j = 0; j < curParent.length; j++ ) {
-					var curType = $(curParent[j]).children('.market').children('a').html();
+					var curType = $( curParent[j] ).children( '.market' ).children( 'a' ).html();
 					var cur = pairData[curType+curContainer.pairAppend];
 					if( cur !== undefined ) {
 						//we can render it!
-						cur.graph.setSelector($(curParent[j]).children('.'+curContainer.childDestination));
+						cur.graph.setSelector( $( curParent[j] ).children( '.' + curContainer.childDestination ));
 						cur.graph.drawStats();
 					}
 				}
@@ -215,7 +210,7 @@
 
 	// listen to AJAX requests:
 
-	function addXMLRequestCallback(callback){
+	function addXMLRequestCallback( callback ) {
 	    var oldSend, i;
 	    if( XMLHttpRequest.callbacks ) {
 	        // we've already overridden send() so just add the callback
@@ -226,13 +221,13 @@
 	        // store the native send()
 	        oldSend = XMLHttpRequest.prototype.send;
 	        // override the native send()
-	        XMLHttpRequest.prototype.send = function(){
+	        XMLHttpRequest.prototype.send = function() {
 
 	            for( i = 0; i < XMLHttpRequest.callbacks.length; i++ ) {
 	                XMLHttpRequest.callbacks[i]( this );
 	            }
 	            // call the native send()
-	            oldSend.apply(this, arguments);
+	            oldSend.apply( this, arguments );
 	        }
 	    }
 	}
@@ -240,18 +235,18 @@
 	addXMLRequestCallback( function( xhr ) {
 		xhr.onreadystatechange = function() {
 			if( xhr.readyState == 4 && xhr.status == 200 ) {
-			    if( xhr.responseURL.indexOf('data') > -1 ) {
+			    if( xhr.responseURL.indexOf( 'data' ) > -1 ) {
 			    	var data = JSON.parse( xhr.response );
-			    	tick(data);
+			    	tick( data );
 			    }
 			}
 		};
 	});
 
-	$("body").on('DOMSubtreeModified', "#dvLastUpdatedOn", function() {
+	$( "body" ).on( 'DOMSubtreeModified', "#dvLastUpdatedOn", function() {
 		render();
 	});
-	$(".dca-log,.dust-log,.pairs-log,.possible-buys-log").on("click",function(){
-		setTimeout(function(){ render(); }, 100 );
+	$( ".dca-log,.dust-log,.pairs-log,.possible-buys-log" ).on( "click", function(){
+		setTimeout( function(){ render(); }, 100 );
 	});
 })();
