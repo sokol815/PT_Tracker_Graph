@@ -153,6 +153,13 @@
 			statName: 'profit',
 			childDestination: 'profit',
 			pairAppend: '_DUST'
+		},
+		pending: {
+			dataName: 'pendingLogData',
+			name: 'dtPendingLogs',
+			statName: 'profit',
+			childDestination: 'profit',
+			pairAppend: '_PEND'
 		}
 	};
 
@@ -246,7 +253,7 @@
 	$( "body" ).on( 'DOMSubtreeModified', "#dvLastUpdatedOn", function() {
 		render();
 	});
-	$( ".dca-log,.dust-log,.pairs-log,.possible-buys-log" ).on( "click", function(){
+	$( ".dca-log,.dust-log,.pairs-log,.possible-buys-log,.pending-log" ).on( "click", function(){
 		setTimeout( function(){ render(); }, 100 );
 	});
 })();
