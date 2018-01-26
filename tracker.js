@@ -1,5 +1,6 @@
 // --- created by Sokol815 1/17/2018
 // --- version 1.2.0
+// --- if you like this, consider tipping me! LTC: LNpicahdGTFpuXNEhTVoUErPb6EEjBdmwg
 (function(){
 	var util = {};
 
