@@ -1,5 +1,5 @@
 // --- created by Sokol815 1/17/2018
-// --- version 1.2.0
+// --- version 1.2.1
 // --- if you like this, consider tipping me! LTC: LNpicahdGTFpuXNEhTVoUErPb6EEjBdmwg
 (function(){
 	var util = {};
@@ -93,10 +93,6 @@
 		var ctx = util.canvasContext;
 		var size = this.destination.getBoundingClientRect()
 		var totalRun = this.stats.totalSamples;
-		if( totalRun < 2 ) {
-			console.warn('please set valid number for util.graphMinutes (more than .17)');
-			return;
-		}
 
 		if( util.extendGraphColumn && size.width < totalRun ) {
 			this.destination.style['width'] = totalRun+'px';
@@ -144,10 +140,10 @@
 			ctx.fillStyle = util.zeroLineColor;
 			ctx.lineWidth = 1;
 			ctx.font = '12px calibri';
-			ctx.fillText( '0%', 0, percent * size.height >> 0 );
+			ctx.fillText( '0%', 0, (percent * size.height >> 0) + .5 );
 			ctx.beginPath();
-			ctx.moveTo( 20, percent * size.height >> 0 );
-			ctx.lineTo( size.width, percent * size.height >> 0 );
+			ctx.moveTo( 20, (percent * size.height >> 0) + .5 );
+			ctx.lineTo( size.width, (percent * size.height >> 0) + .5 );
 			ctx.stroke();
 		}
 
@@ -156,8 +152,8 @@
 			ctx.strokeStyle = util.sellThresholdColor;
 			ctx.lineWidth = 1;
 			ctx.beginPath();
-			ctx.moveTo( 0, percent * size.height >> 0 );
-			ctx.lineTo( size.width, percent * size.height >> 0 );
+			ctx.moveTo( 0, (percent * size.height >> 0) +.5 );
+			ctx.lineTo( size.width, (percent * size.height >> 0) +.5 );
 			ctx.stroke();
 		}
 
@@ -170,9 +166,9 @@
 			if( this.stats.data[i] != null ) {
 				if( first ) {
 					first = false;
-					ctx.moveTo( (index/(totalRun-1) * size.width) , (size.height - (( this.stats.data[i] - range.min ) / range.size * size.height )));
+					ctx.moveTo( (index/totalRun * size.width) , (size.height - (( this.stats.data[i] - range.min ) / range.size * size.height )));
 				} else {
-					ctx.lineTo( (index/(totalRun-1) * size.width) , (size.height - (( this.stats.data[i] - range.min ) / range.size * size.height )));
+					ctx.lineTo( (index/totalRun * size.width) , (size.height - (( this.stats.data[i] - range.min ) / range.size * size.height )));
 				}
 				index++;
 			}

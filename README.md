@@ -1,6 +1,6 @@
 ﻿# PT_Tracker_Graph
 
-Currently at 1.2.0
+Currently at 1.2.1
 
 Use tracker.js to display a line-graph of your profit %
 
@@ -8,6 +8,8 @@ Use tracker.js to display a line-graph of your profit %
 
 
 New Features
+- 1.2.1
+  - cleaner lines
 - 1.2.0
   - configurable colors
   - new zero% line and Sell Threshold line
