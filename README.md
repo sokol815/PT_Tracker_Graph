@@ -2,7 +2,7 @@
 
 Currently at 1.2.0
 
-Use tracker.js to display a line-graph of your profit % from the last 30 results from the server.
+Use tracker.js to display a line-graph of your profit %
 
 ![Screenshot of Functionality](https://i.imgur.com/sf1qHk5.png "Graphs on the DCA screen")
 
