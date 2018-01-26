@@ -146,7 +146,7 @@
 			ctx.font = '12px calibri';
 			ctx.fillText( '0%', 0, percent * size.height >> 0 );
 			ctx.beginPath();
-			ctx.moveTo( 20, percent * size.height );
+			ctx.moveTo( 20, percent * size.height >> 0 );
 			ctx.lineTo( size.width, percent * size.height >> 0 );
 			ctx.stroke();
 		}
@@ -156,8 +156,8 @@
 			ctx.strokeStyle = util.sellThresholdColor;
 			ctx.lineWidth = 1;
 			ctx.beginPath();
-			ctx.moveTo( 0, percent * size.height );
-			ctx.lineTo( size.width, percent * size.height );
+			ctx.moveTo( 0, percent * size.height >> 0 );
+			ctx.lineTo( size.width, percent * size.height >> 0 );
 			ctx.stroke();
 		}
 
@@ -170,9 +170,9 @@
 			if( this.stats.data[i] != null ) {
 				if( first ) {
 					first = false;
-					ctx.moveTo( (index/(totalRun-1) * size.width) >> 0, (size.height - (( this.stats.data[i] - range.min ) / range.size * size.height )) >> 0);
+					ctx.moveTo( (index/(totalRun-1) * size.width) , (size.height - (( this.stats.data[i] - range.min ) / range.size * size.height )));
 				} else {
-					ctx.lineTo( (index/(totalRun-1) * size.width) >> 0, (size.height - (( this.stats.data[i] - range.min ) / range.size * size.height )) >> 0);
+					ctx.lineTo( (index/(totalRun-1) * size.width) , (size.height - (( this.stats.data[i] - range.min ) / range.size * size.height )));
 				}
 				index++;
 			}
