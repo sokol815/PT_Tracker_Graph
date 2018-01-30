@@ -1,5 +1,5 @@
 // --- created by Sokol815 1/17/2018
-// --- version 1.2.3
+// --- version 1.2.3.1
 // --- if you like this, consider tipping me! LTC: LNpicahdGTFpuXNEhTVoUErPb6EEjBdmwg
 (function(){
 	var util = {};
@@ -24,7 +24,7 @@
 
 	// --- the below settings are experimental... please let me know if they aren't working and you're using them.
 
-	util.testHangWarning = false; // --- true to enable hang warnings; false to disable.
+	util.testHangWarning = true; // --- true to enable hang warnings; false to disable.
 	util.hangThreshold = 10; // --- the number of ticks with an identical price that will cause a hang warning alert.
 	util.percentHanging = .5; // --- percentage of items needed to appear to hang before a warning is given
 	util.hangWarningMessage = '{n} Prices seem to be stagnant... did the bot hang?'; // --- hang message
@@ -37,8 +37,8 @@
 	util.topOffsetPercentage = Math.min( 60, Math.max( 2, util.topOffsetPercentage ));
 	util.bottomOffsetPercentage = Math.min( 60, Math.max( 2, util.bottomOffsetPercentage ));
 	util.graphFrames = ((util.graphMinutes || 5) * 6) >> 0;
-	util.hangThreshold = Math.min( 1, Math.max( 999, util.hangThreshold ));
-	util.percentHanging = Math.min( 0.001, Math.max( 1, util.percentHanging ));
+	util.hangThreshold = Math.min( 999, Math.max( 1, util.hangThreshold ));
+	util.percentHanging = Math.min( 1, Math.max( .001, util.percentHanging ));
 
 	util.createHiDPICanvas = function( w, h, ratio, elementUse ) {
 		if( !window.PIXEL_RATIO ) {
@@ -288,10 +288,11 @@
 					(source[j].triggerValue || 0) / 100 //sell threshold
 				);
 				setCacheData( pair, pairData[pair].graph.stats.data, pairData[pair].lastTick );
-				if( containers[dataTypes[i]].hangCheck ) {
+				if( util.testHangWarning && containers[dataTypes[i]].hangCheck ) {
 					hangStats.max++;
 					var result = hangCheck( pairData[pair] );
 					if( result >= util.hangThreshold ) {
+						console.log( pair + ' is signaling a hang.');
 						hangStats.signaled++;
 					}
 				}
@@ -312,6 +313,7 @@
 			var curValue = pair.graph.stats.data[i];
 			if( curValue != null && curValue != '' && lastValue == null ) {
 				lastValue = curValue;
+
 				run++;
 			} else if( curValue == lastValue ) {
 				run++;

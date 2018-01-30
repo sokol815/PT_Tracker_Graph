@@ -8,7 +8,7 @@
 5. Click on the chrome extention that you installed (on top right)
 6. Paste the code in and save it
 
-Currently at 1.2.3
+Currently at 1.2.3.1
 
 Use tracker.js to display a line-graph of your profit %
 
