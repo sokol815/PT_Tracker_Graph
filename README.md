@@ -1,5 +1,5 @@
 ﻿# PT_Tracker_Graph
- 
+
 # Instructions
 1. Open Google Chrome
 2. Install https://chrome.google.com/webstore/detail/custom-javascript-for-web/poakhlngfciodnhlhhgnaaelnpjljija?utm_source=chrome-app-launcher-info-dialog
@@ -8,7 +8,7 @@
 5. Click on the chrome extention that you installed (on top right)
 6. Paste the code in and save it
 
-Currently at 1.2.1
+Currently at 1.2.3
 
 Use tracker.js to display a line-graph of your profit %
 
@@ -16,6 +16,8 @@ Use tracker.js to display a line-graph of your profit %
 
 
 New Features
+- 1.2.3
+  - experimental hang check: set util.testHangWarning to true to enable hang check
 - 1.2.2
   - data cache
 - 1.2.1
