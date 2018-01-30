@@ -8,6 +8,8 @@ Use tracker.js to display a line-graph of your profit %
 
 
 New Features
+- 1.2.2
+  - data cache
 - 1.2.1
   - cleaner lines
 - 1.2.0
