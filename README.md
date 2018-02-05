@@ -8,7 +8,7 @@
 5. Click on the chrome extention that you installed (on top right)
 6. Paste the code in and save it
 
-Currently at 1.2.3.1
+Currently at 1.2.4.0
 
 Use tracker.js to display a line-graph of your profit %
 
@@ -16,6 +16,8 @@ Use tracker.js to display a line-graph of your profit %
 
 
 New Features
+- 1.2.4
+  - total crypto market cap now displayed by BTC current price
 - 1.2.3
   - experimental hang check: set util.testHangWarning to true to enable hang check
 - 1.2.2
