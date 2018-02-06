@@ -11,6 +11,7 @@
 Currently at 1.2.4.0
 
 Use tracker.js to display a line-graph of your profit %
+use tracker.minifed.js if you're running into space issues (cjs for example)
 
 ![Screenshot of Functionality](https://i.imgur.com/sf1qHk5.png "Graphs on the DCA screen")
 
