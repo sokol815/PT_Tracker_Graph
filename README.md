@@ -8,7 +8,7 @@
 5. Click on the chrome extention that you installed (on top right)
 6. Paste the code in and save it
 
-Currently at 1.2.4.0
+Currently at 1.2.4.1
 
 Use tracker.js to display a line-graph of your profit %
 use tracker.minifed.js if you're running into space issues (cjs for example)
@@ -17,6 +17,8 @@ use tracker.minifed.js if you're running into space issues (cjs for example)
 
 
 New Features
+- 1.2.4.1
+  - increase hang warning to 90% stagnant for 15 ticks.
 - 1.2.4
   - total crypto market cap now displayed by BTC current price
 - 1.2.3
